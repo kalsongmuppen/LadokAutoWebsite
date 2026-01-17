@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ladok Auto — My courses</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">Ladok Auto</div>
+          <div class="brand-tag" data-i18n="brandTag"></div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="authed">
+        <a class="active" href="dashboard.html" data-i18n="navCourses"></a>
+        <a href="preferences.html" data-i18n="navSettings"></a>
+        <a href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="public">
+        <a href="index.html" data-i18n="navSignIn"></a>
+        <a href="signup.html" data-i18n="navCreate"></a>
+        <a href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="nav-warning hidden" id="discordNavWarning" data-visible="authed" role="status" aria-live="polite">
+          <span class="warn-dot" aria-hidden="true"></span>
+          <span data-i18n="navDiscordWarning"></span>
+        </div>
+
+        <div class="user-chip" data-visible="authed" title="Signed in" aria-label="Signed in">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="handle" data-user-handle></span>
+        </div>
+
+        <button class="pill-btn" id="langToggle" type="button" aria-label="Toggle language" aria-pressed="false">
+          <span class="pill-icon" aria-hidden="true">🌐</span>
+          <span class="pill-text">
+            <strong data-lang-mode>EN</strong>
+            <span data-lang-desc>English</span>
+          </span>
+        </button>
+
+        <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="pill-icon" data-theme-icon aria-hidden="true">☀️</span>
+          <span class="pill-text">
+            <strong data-theme-mode>Light</strong>
+            <span data-theme-desc>Bright</span>
+          </span>
+        </button>
+
+        <a class="btn" href="#" data-action="logout" role="button" data-i18n="navSignOut" data-visible="authed"></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="toast-area" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="container page section" data-page="dashboard" data-requires-auth="true">
+    <section class="card">
+      <div class="card-header">
+        <h1 data-i18n="dashTitle"></h1>
+        <p class="subtext" data-i18n="dashSubtitle"></p>
+      </div>
+
+      <div class="card-body">
+        <div class="tools">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 21l-4.35-4.35"></path>
+              <circle cx="11" cy="11" r="7"></circle>
+            </svg>
+            <input type="search" data-action="search" data-i18n-placeholder="dashSearchPH" />
+          </div>
+
+          <div class="spacer"></div>
+
+          <button class="btn btn-primary" type="button" data-action="save-courses" data-i18n="dashSave"></button>
+        </div>
+
+        <!-- Examinations global controls -->
+        <div class="dash-exams exam-grid">
+          <div class="setting-box">
+            <div class="setting-head">
+              <div>
+                <h3 class="setting-title" data-i18n="dashExamAutoAllTitle"></h3>
+                <p class="setting-desc" data-i18n="dashExamAutoAllDesc"></p>
+              </div>
+              <label class="switch" aria-label="Auto-register all available examinations">
+                <input type="checkbox" id="examAutoAll" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-box" id="examReminderBox">
+            <div class="setting-head">
+              <div>
+                <h3 class="setting-title" data-i18n="dashExamRemAllTitle"></h3>
+                <p class="setting-desc" data-i18n="dashExamRemAllDesc"></p>
+              </div>
+
+              <div style="display:flex; align-items:center; gap:10px;">
+                <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                <label class="switch" aria-label="Reminder before exam registration ends">
+                  <input type="checkbox" id="examReminderAll" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile-only master toggles (courses) -->
+        <div class="master-mobile" aria-label="Toggle all courses">
+          <div class="master-card">
+            <h3 data-i18n="thReminder"></h3>
+            <p data-i18n="thReminderHelp"></p>
+            <div class="master-row">
+              <span data-i18n="toggleAllCourses"></span>
+              <label class="switch" aria-label="Toggle all reminders">
+                <input type="checkbox" data-master="reminder" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="master-card">
+            <h3 data-i18n="thAutoreg"></h3>
+            <p data-i18n="thAutoregHelp"></p>
+            <div class="master-row">
+              <span data-i18n="toggleAllCourses"></span>
+              <label class="switch" aria-label="Toggle all auto-registration">
+                <input type="checkbox" data-master="autoreg" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="course-table">
+          <div class="table-head">
+            <div class="cell"><span data-i18n="thCourse"></span></div>
+            <div class="cell"><span data-i18n="thStatus"></span></div>
+            <div class="cell"><span data-i18n="thRegistration"></span></div>
+
+            <div class="cell head-toggle">
+              <div class="head-toggle-top">
+                <div data-i18n="thReminder"></div>
+                <div class="head-help" data-i18n="thReminderHelp"></div>
+              </div>
+              <div class="master-box">
+                <div class="master-text"><span data-i18n="toggleAllCourses"></span></div>
+                <label class="switch" aria-label="Toggle all reminders">
+                  <input type="checkbox" data-master="reminder" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="cell head-toggle">
+              <div class="head-toggle-top">
+                <div data-i18n="thAutoreg"></div>
+                <div class="head-help" data-i18n="thAutoregHelp"></div>
+              </div>
+              <div class="master-box">
+                <div class="master-text"><span data-i18n="toggleAllCourses"></span></div>
+                <label class="switch" aria-label="Toggle all auto-registration">
+                  <input type="checkbox" data-master="autoreg" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-rows">
+            <!-- MA101B -->
+            <div class="table-row" data-course-id="MA101B">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_MA101B_title"></div>
+                  <div class="course-term" data-i18n="course_MA101B_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge mint" data-i18n="statusRegistered"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge gray" data-i18n="regNoAction"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" disabled />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- DV123A -->
+            <div class="table-row" data-course-id="DV123A">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_DV123A_title"></div>
+                  <div class="course-term" data-i18n="course_DV123A_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge gray" data-i18n="statusNotRegistered"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge mint" data-i18n="regOpensJan20"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- FY201C -->
+            <div class="table-row" data-course-id="FY201C">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_FY201C_title"></div>
+                  <div class="course-term" data-i18n="course_FY201C_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge gray" data-i18n="statusPlanned"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge gray" data-i18n="regNotPublished"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- DA330D -->
+            <div class="table-row" data-course-id="DA330D">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_DA330D_title"></div>
+                  <div class="course-term" data-i18n="course_DA330D_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge gray" data-i18n="statusNotRegistered"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge mint" data-i18n="regClosesFeb1"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- RE210A -->
+            <div class="table-row" data-course-id="RE210A">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_RE210A_title"></div>
+                  <div class="course-term" data-i18n="course_RE210A_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge gray" data-i18n="statusActionNeeded"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge mint" data-i18n="regOpensJan20"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- EL150B -->
+            <div class="table-row" data-course-id="EL150B">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_EL150B_title"></div>
+                  <div class="course-term" data-i18n="course_EL150B_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge gray" data-i18n="statusPlanned"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge gray" data-i18n="regNotPublished"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ST120A -->
+            <div class="table-row" data-course-id="ST120A">
+              <div class="cell course-cell" data-i18n-label="thCourse">
+                <div>
+                  <div class="course-title" data-i18n="course_ST120A_title"></div>
+                  <div class="course-term" data-i18n="course_ST120A_term"></div>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thStatus">
+                <span class="badge gray" data-i18n="statusNotRegistered"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thRegistration">
+                <span class="badge mint" data-i18n="regClosesFeb1"></span>
+              </div>
+
+              <div class="cell" data-i18n-label="thReminder">
+                <div class="toggle-cell" data-kind="reminder">
+                  <span class="toggle-name" data-i18n="thReminder"></span>
+                  <button type="button" class="warn-flag warn-tooltip" data-i18n-tooltip="warnReminderOffTip" aria-label="Reminder off">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                  </button>
+                  <label class="switch">
+                    <input type="checkbox" data-course="reminder" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cell" data-i18n-label="thAutoreg">
+                <div class="toggle-cell">
+                  <span class="toggle-name" data-i18n="thAutoreg"></span>
+                  <label class="switch">
+                    <input type="checkbox" data-course="autoreg" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div>© <span data-year></span> Ladok Auto</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ladok Auto — About</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">Ladok Auto</div>
+          <div class="brand-tag" data-i18n="brandTag"></div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="public">
+        <a href="index.html" data-i18n="navSignIn"></a>
+        <a href="signup.html" data-i18n="navCreate"></a>
+        <a class="active" href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="authed">
+        <a href="dashboard.html" data-i18n="navCourses"></a>
+        <a href="preferences.html" data-i18n="navSettings"></a>
+        <a class="active" href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="nav-warning hidden" id="discordNavWarning" data-visible="authed" role="status" aria-live="polite">
+          <span class="warn-dot" aria-hidden="true"></span>
+          <span data-i18n="navDiscordWarning"></span>
+        </div>
+
+        <div class="user-chip" data-visible="authed" title="Signed in" aria-label="Signed in">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="handle" data-user-handle></span>
+        </div>
+
+        <button class="pill-btn" id="langToggle" type="button" aria-label="Toggle language" aria-pressed="false">
+          <span class="pill-icon" aria-hidden="true">🌐</span>
+          <span class="pill-text">
+            <strong data-lang-mode>EN</strong>
+            <span data-lang-desc>English</span>
+          </span>
+        </button>
+
+        <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="pill-icon" data-theme-icon aria-hidden="true">☀️</span>
+          <span class="pill-text">
+            <strong data-theme-mode>Light</strong>
+            <span data-theme-desc>Bright</span>
+          </span>
+        </button>
+
+        <a class="btn" href="#" data-action="logout" role="button" data-i18n="navSignOut" data-visible="authed"></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="toast-area" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="container page section">
+    <section class="card">
+      <div class="card-header">
+        <h1 data-i18n="aboutTitle"></h1>
+        <p class="subtext" data-i18n="aboutSubtitle"></p>
+      </div>
+
+      <div class="card-body">
+        <div class="setting-box">
+          <p class="subtext" style="margin:0;" data-i18n="aboutP1"></p>
+        </div>
+
+        <div class="setting-box">
+          <p class="subtext" style="margin:0;" data-i18n="aboutP2"></p>
+        </div>
+
+        <div class="setting-box">
+          <p class="subtext" style="margin:0;" data-i18n="aboutP3"></p>
+        </div>
+
+        <div class="setting-box">
+          <h3 class="setting-title" style="margin:0 0 8px;" data-i18n="faqTitle"></h3>
+
+          <div class="setting-box" style="margin-top:10px;">
+            <div class="setting-title" data-i18n="faqQDiscord"></div>
+            <p class="setting-desc" style="margin:8px 0 0;" data-i18n="faqADiscord"></p>
+          </div>
+
+          <div class="setting-box" style="margin-top:10px;">
+            <div class="setting-title" data-i18n="faqQSecure"></div>
+            <p class="setting-desc" style="margin:8px 0 0;" data-i18n="faqASecure"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div>© <span data-year></span> Ladok Auto</div>
+  </footer>
+</body>
+</html>

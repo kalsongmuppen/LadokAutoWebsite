@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ladok Auto — Settings</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">Ladok Auto</div>
+          <div class="brand-tag" data-i18n="brandTag"></div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="authed">
+        <a href="dashboard.html" data-i18n="navCourses"></a>
+        <a class="active" href="preferences.html" data-i18n="navSettings"></a>
+        <a href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="public">
+        <a href="index.html" data-i18n="navSignIn"></a>
+        <a href="signup.html" data-i18n="navCreate"></a>
+        <a href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="nav-warning hidden" id="discordNavWarning" data-visible="authed" role="status" aria-live="polite">
+          <span class="warn-dot" aria-hidden="true"></span>
+          <span data-i18n="navDiscordWarning"></span>
+        </div>
+
+        <div class="user-chip" data-visible="authed" title="Signed in" aria-label="Signed in">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="handle" data-user-handle></span>
+        </div>
+
+        <button class="pill-btn" id="langToggle" type="button" aria-label="Toggle language" aria-pressed="false">
+          <span class="pill-icon" aria-hidden="true">🌐</span>
+          <span class="pill-text">
+            <strong data-lang-mode>EN</strong>
+            <span data-lang-desc>English</span>
+          </span>
+        </button>
+
+        <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="pill-icon" data-theme-icon aria-hidden="true">☀️</span>
+          <span class="pill-text">
+            <strong data-theme-mode>Light</strong>
+            <span data-theme-desc>Bright</span>
+          </span>
+        </button>
+
+        <a class="btn" href="#" data-action="logout" role="button" data-i18n="navSignOut" data-visible="authed"></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="toast-area" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="container page section" data-page="settings" data-requires-auth="true">
+    <section class="card">
+      <div class="card-header">
+        <h1 data-i18n="setTitle"></h1>
+        <p class="subtext" data-i18n="setSubtitle"></p>
+      </div>
+
+      <div class="card-body">
+        <!-- Reminder timing -->
+        <div class="setting-box">
+          <div class="field">
+            <label for="leadTime" data-i18n="setLeadLabel"></label>
+            <select id="leadTime">
+              <option value="1d" data-i18n="setLead1d"></option>
+              <option value="2d" data-i18n="setLead2d"></option>
+              <option value="3d" data-i18n="setLead3d"></option>
+              <option value="5d" data-i18n="setLead5d"></option>
+              <option value="7d" data-i18n="setLead7d"></option>
+              <option value="max" data-i18n="setLeadMax"></option>
+            </select>
+            <p class="helper" style="margin:0;">(Discord required for reminder settings)</p>
+          </div>
+        </div>
+
+        <!-- Notify when registered -->
+        <div class="setting-box">
+          <div class="setting-head">
+            <div>
+              <h3 class="setting-title" data-i18n="setNotifyRegistered"></h3>
+              <p class="setting-desc" data-i18n="setNotifyRegisteredDesc"></p>
+            </div>
+            <label class="switch" aria-label="Notify when registered">
+              <input type="checkbox" id="notifyRegistered" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Discord (button opens popup with instructions inside) -->
+        <div class="setting-box">
+          <div class="setting-head">
+            <div>
+              <h3 class="setting-title" data-i18n="discordSettingsTitle"></h3>
+              <p class="setting-desc" id="discordStatus"></p>
+            </div>
+            <button class="btn btn-primary" type="button" id="discordChangeBtn"></button>
+          </div>
+          <p class="helper" style="margin:10px 0 0;">
+            (Discord is required for reminders. Use the button above to connect or change your Discord username.)
+          </p>
+        </div>
+
+        <div class="tools">
+          <button class="btn btn-primary" type="button" data-action="save-settings" data-i18n="btnSaveSettings"></button>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- Danger zone -->
+        <div class="setting-box danger-box">
+          <div class="setting-head">
+            <div>
+              <h3 class="setting-title" data-i18n="dangerZone"></h3>
+              <p class="setting-desc" style="margin-top:6px;">
+                Actions here are permanent in this demo.
+              </p>
+            </div>
+          </div>
+
+          <div style="display:grid; gap:10px; margin-top:12px;">
+            <!-- Hidden by default; shown only if a Discord username exists -->
+            <div class="setting-box danger-box hidden" id="discordDisconnectBox" style="margin:0;">
+              <div class="setting-head">
+                <div>
+                  <h3 class="setting-title" data-i18n="disconnectDiscord"></h3>
+                  <p class="setting-desc" data-i18n="disconnectDiscordDesc"></p>
+                </div>
+                <button class="btn btn-danger" type="button" data-action="disconnect-discord" data-i18n="disconnectDiscord"></button>
+              </div>
+            </div>
+
+            <div class="setting-box danger-box" style="margin:0;">
+              <div class="setting-head">
+                <div>
+                  <h3 class="setting-title" data-i18n="deleteAccount"></h3>
+                  <p class="setting-desc" data-i18n="deleteAccountDesc"></p>
+                </div>
+                <button class="btn btn-danger" type="button" data-action="delete-account" data-i18n="deleteAccount"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Discord popup (includes server link + steps inside) -->
+  <div class="modal-backdrop hidden" id="discordModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="discordModalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="discordModalTitle" data-i18n="discordOnboardTitle"></h3>
+        <button class="btn" type="button" id="discordModalClose" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="setting-box">
+          <div class="setting-head">
+            <div>
+              <h3 class="setting-title" data-i18n="discordServerTitle"></h3>
+              <p class="setting-desc" data-i18n="discordServerDesc"></p>
+            </div>
+            <a class="btn btn-primary" data-discord-link href="https://discord.com/invite/" target="_blank" rel="noopener" data-i18n="discordServerBtn"></a>
+          </div>
+        </div>
+
+        <div class="alert alert-danger">
+          <strong data-i18n="warnTitle"></strong>
+          <span data-i18n="discordOnboardWarn"></span>
+        </div>
+
+        <div>
+          <div style="font-weight:900; font-size:13px;" data-i18n="discordGuideTitle"></div>
+          <ol class="steps">
+            <li data-i18n="discordGuideS1"></li>
+            <li data-i18n="discordGuideS2"></li>
+            <li data-i18n="discordGuideS3"></li>
+            <li data-i18n="discordGuideS4"></li>
+          </ol>
+        </div>
+
+        <div class="field">
+          <label for="discordModalUsername" data-i18n="discordSettingsLabel"></label>
+
+          <div class="input-row">
+            <input type="text" id="discordModalUsername" />
+            <button class="btn btn-primary" type="button" id="discordModalSend" data-i18n="btnSendCode"></button>
+          </div>
+
+          <p class="helper" id="discordModalHint"></p>
+        </div>
+
+        <div class="field">
+          <label for="discordModalCode" data-i18n="codeLabel"></label>
+          <input type="text" id="discordModalCode" data-i18n-placeholder="codePH" />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+
+          <button class="btn btn-primary" type="button" id="discordModalVerify" data-i18n="btnVerify"></button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="container footer">
+    <div>© <span data-year></span> Ladok Auto</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ladok Auto — Sign in</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">Ladok Auto</div>
+          <div class="brand-tag" data-i18n="brandTag"></div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="public">
+        <a class="active" href="index.html" data-i18n="navSignIn"></a>
+        <a href="signup.html" data-i18n="navCreate"></a>
+        <a href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <nav class="nav" aria-label="Primary navigation" data-visible="authed">
+        <a href="dashboard.html" data-i18n="navCourses"></a>
+        <a href="preferences.html" data-i18n="navSettings"></a>
+        <a href="about.html" data-i18n="navAbout"></a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="nav-warning hidden" id="discordNavWarning" data-visible="authed" role="status" aria-live="polite">
+          <span class="warn-dot" aria-hidden="true"></span>
+          <span data-i18n="navDiscordWarning"></span>
+        </div>
+
+        <div class="user-chip" data-visible="authed" title="Signed in" aria-label="Signed in">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="handle" data-user-handle></span>
+        </div>
+
+        <button class="pill-btn" id="langToggle" type="button" aria-label="Toggle language" aria-pressed="false">
+          <span class="pill-icon" aria-hidden="true">🌐</span>
+          <span class="pill-text">
+            <strong data-lang-mode>EN</strong>
+            <span data-lang-desc>English</span>
+          </span>
+        </button>
+
+        <button class="pill-btn" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="pill-icon" data-theme-icon aria-hidden="true">☀️</span>
+          <span class="pill-text">
+            <strong data-theme-mode>Light</strong>
+            <span data-theme-desc>Bright</span>
+          </span>
+        </button>
+
+        <a class="btn" href="#" data-action="logout" role="button" data-i18n="navSignOut" data-visible="authed"></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="toast-area" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="container page section">
+    <section class="card">
+      <div class="card-header">
+        <h1 data-i18n="loginTitle"></h1>
+        <p class="subtext" data-i18n="mduNoticeBody"></p>
+      </div>
+
+      <div class="card-body">
+        <div class="setting-box">
+          <p class="subtext" style="margin:0;">
+            <strong data-i18n="mduNoticeTitle"></strong>
+            <span> — </span>
+            <span data-i18n="mduNoticeBody"></span>
+          </p>
+        </div>
+
+        <div class="error hidden" id="loginError" role="alert"></div>
+
+        <form class="form-grid" data-form="login" novalidate>
+          <div class="field">
+            <label for="loginEmail" data-i18n="mduEmailLabel"></label>
+            <input id="loginEmail" type="email" data-i18n-placeholder="mduEmailPH" autocomplete="email" required />
+          </div>
+
+          <div class="field">
+            <label for="loginPassword" data-i18n="passwordLabel"></label>
+            <input id="loginPassword" type="password" data-i18n-placeholder="passwordPH" autocomplete="current-password" required />
+          </div>
+
+          <!-- Sign in button bottom-left -->
+          <div class="tools">
+            <button class="btn btn-primary" type="submit" data-i18n="btnSignIn"></button>
+            <div class="spacer"></div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div>© <span data-year></span> Ladok Auto</div>
+  </footer>
+</body>
+</html>
