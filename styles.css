@@ -437,6 +437,19 @@ html[data-theme="dark"] .switch input:disabled + .slider {
   border-color: rgba(250, 196, 120, 0.30);
 }
 
+
+/* Attention switch (reminder off): red warning color when the feature is disabled */
+.toggle-cell.attention .switch input:not(:checked):not(:disabled) + .slider,
+.setting-box.attention .switch input:not(:checked):not(:disabled) + .slider {
+  background: rgba(200, 59, 59, 0.26);
+  border-color: rgba(200, 59, 59, 0.55);
+}
+html[data-theme="dark"] .toggle-cell.attention .switch input:not(:checked):not(:disabled) + .slider,
+html[data-theme="dark"] .setting-box.attention .switch input:not(:checked):not(:disabled) + .slider {
+  background: rgba(255, 154, 154, 0.18);
+  border-color: rgba(255, 154, 154, 0.34);
+}
+
 /* Remove blue focus outline on toggles */
 .switch input:focus + .slider,
 .switch input:focus-visible + .slider {
@@ -744,9 +757,9 @@ html[data-theme="dark"] .t-body { color: #a8c0b9; }
   justify-content: center;
   padding: 18px;
   padding-top: calc(18px + env(safe-area-inset-top));
+  padding-right: calc(18px + env(safe-area-inset-right));
   padding-bottom: calc(18px + env(safe-area-inset-bottom));
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  padding-left: calc(18px + env(safe-area-inset-left));
   z-index: 90;
 }
 
@@ -757,13 +770,13 @@ html[data-theme="dark"] .t-body { color: #a8c0b9; }
   border-radius: 18px;
   border: 1px solid #dbe8e3;
   box-shadow: 0 22px 60px rgba(0,0,0,0.25);
-  overflow: hidden;
+
+  /* Mobile-safe sizing */
   display: flex;
   flex-direction: column;
-  /* Keep the modal within the viewport on small phones */
   max-height: calc(100vh - 36px);
-  max-height: calc(100svh - 36px);
   max-height: calc(100dvh - 36px);
+  overflow: hidden;
 }
 html[data-theme="dark"] .modal {
   background: #141c1b;
@@ -777,19 +790,26 @@ html[data-theme="dark"] .modal {
   gap: 10px;
   padding: 14px 14px 10px;
   border-bottom: 1px solid #dbe8e3;
+
+  /* Keep the close button reachable while the body scrolls */
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #ffffff;
 }
-html[data-theme="dark"] .modal-header { border-bottom-color: #243330; }
+html[data-theme="dark"] .modal-header {
+  border-bottom-color: #243330;
+  background: #141c1b;
+}
+
 .modal-header h3 { margin: 0; font-size: 16px; }
 
 .modal-body {
   padding: 14px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 12px;
-  overflow-y: auto;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
-  min-height: 0; /* required for scrolling inside flex containers */
-  overscroll-behavior: contain;
 }
 
 .modal-actions {
@@ -797,27 +817,34 @@ html[data-theme="dark"] .modal-header { border-bottom-color: #243330; }
   gap: 10px;
   justify-content: flex-end;
   flex-wrap: wrap;
+
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+
+  margin: 8px -14px -14px;
   padding: 12px 14px;
-  padding-bottom: calc(12px + env(safe-area-inset-bottom));
   border-top: 1px solid #dbe8e3;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
 html[data-theme="dark"] .modal-actions {
   border-top-color: #243330;
-  background: #141c1b;
+  background: rgba(20, 28, 27, 0.92);
 }
 
 @media (max-width: 420px) {
   .modal-backdrop {
     padding: 12px;
     padding-top: calc(12px + env(safe-area-inset-top));
+    padding-right: calc(12px + env(safe-area-inset-right));
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
-    align-items: flex-start;
+    padding-left: calc(12px + env(safe-area-inset-left));
   }
-  .modal { border-radius: 16px; }
-}
-@media (max-height: 640px) {
-  .modal-backdrop { align-items: flex-start; }
+  .modal-actions { justify-content: stretch; }
+  .modal-actions .btn { width: 100%; }
 }
 
 /* Mobile tuning */

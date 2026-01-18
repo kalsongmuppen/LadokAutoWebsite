@@ -585,59 +585,17 @@
     });
   }
 
-  function lockScroll() {
-    if (document.documentElement.classList.contains("modal-open")) return;
-    var y = window.scrollY || window.pageYOffset || 0;
-    document.body.dataset.scrollY = String(y);
-    document.documentElement.classList.add("modal-open");
-
-    // iOS-friendly scroll lock
-    document.body.style.position = "fixed";
-    document.body.style.top = "-" + y + "px";
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-  }
-
-  function unlockScrollIfNoModals() {
-    var anyOpen = document.querySelector(".modal-backdrop:not(.hidden)");
-    if (anyOpen) return;
-
-    var y = 0;
-    try { y = parseInt(document.body.dataset.scrollY || "0", 10) || 0; } catch (e) { y = 0; }
-
-    document.documentElement.classList.remove("modal-open");
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-    delete document.body.dataset.scrollY;
-
-    window.scrollTo(0, y);
-  }
-
   function openModal(id) {
     var el = document.getElementById(id);
     if (!el) return;
-
-    lockScroll();
     el.classList.remove("hidden");
     el.setAttribute("aria-hidden", "false");
-
-    // Focus the first input/button inside the modal for better mobile UX
-    window.setTimeout(function () {
-      var focusable = el.querySelector("input, button, a[href], select, textarea, [tabindex]:not([tabindex='-1'])");
-      if (focusable && focusable.focus) focusable.focus();
-    }, 0);
   }
-
   function closeModal(id) {
     var el = document.getElementById(id);
     if (!el) return;
     el.classList.add("hidden");
     el.setAttribute("aria-hidden", "true");
-    unlockScrollIfNoModals();
   }
 
   var COURSE_KEY = "la_course_settings";
@@ -991,22 +949,16 @@
       if (examBox) examBox.classList.remove("attention");
     }
 
-    function updateReminderWarning() {
-      var warn = document.getElementById("reminderWarning");
-      if (!warn) return;
-
+    
+    function updateReminderAttention() {
       clearToggleWarnings();
 
-      if (!isDiscordConnected()) {
-        warn.classList.add("hidden");
-        return;
-      }
+      // If Discord isn't connected, reminder toggles are disabled anyway.
+      if (!isDiscordConnected()) return;
 
-      var anyCourseReminderOff = false;
       for (var i = 0; i < rows.length; i++) {
         var inp = rows[i].querySelector("input[data-course='reminder']");
         if (inp && !inp.disabled && !inp.checked) {
-          anyCourseReminderOff = true;
           var cell = rows[i].querySelector(".toggle-cell[data-kind='reminder']");
           if (cell) cell.classList.add("attention");
         }
@@ -1017,9 +969,6 @@
         var box = document.getElementById("examReminderBox");
         if (box) box.classList.add("attention");
       }
-
-      if (anyCourseReminderOff || examOff) warn.classList.remove("hidden");
-      else warn.classList.add("hidden");
     }
 
     function updateMasters() {
@@ -1057,7 +1006,7 @@
 
       apply("reminder", mRem, true);
       apply("autoreg", mAu, false);
-      updateReminderWarning();
+      updateReminderAttention();
     }
 
     window.refreshDashboardMasters = function () { updateMasters(); };
